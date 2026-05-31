@@ -1,0 +1,69 @@
+    1  nmcli con mod "Wired connection 1" ipv4.method auto
+    2  nmcli con up "Wired connection 1"
+    3  ip a
+    4  ping -c 4 8.8.8.8
+    5  nmcli con mod "Wired connection 1" ipv4.addresses
+    6  nmcli con mod "Wired connection 1" -ipv4.addresses
+    7  nmcli con mod "Wired connection 1" -ipv4.addresses ""
+    8  nmcli con mod "Wired connection 1" -ipv4.gateway ""
+    9  nmcli con mod "Wired connection 1" -ipv4.addresses ""
+   10  nmcli con mod "Wired connection 1" -ipv4.dns ""
+   11  nmcli con mod "Wired connection 1" ipv4.method auto
+   12  nmcli con down "Wired connection 1"
+   13  nmcli con up "Wired connection 1"
+   14  ip a
+   15  ip route
+   16  ping -c 4 8.8.8.8 
+   17  hostnamectl set-hostname mephi-2026.domain.local
+   18  ping -c 4 8.8.8.8 > /tmp/network_check.txt
+   19  ping -c 4 10.0.2.2 >> /tmp/network_check.txt
+   20  dnf install -y nginx tcpdump libcap-ng-utils dnf-plugins-core
+   21  dnf download --destdir /tmp tcpdump
+   22  rpm -Uvh --replacepkgs /tmp/tcpdump*.rpm
+   23  nginx -v
+   24  tcpdump --version
+   25  getcap --help
+   26  lsblk
+   27  parted -s /dev/sdb mklabel gpt
+   28  parted -s /dev/sdb mkpart primary ext4 0% 100%
+   29  mkfs.ext4 -L MEPHI_DATA /dev/sdb1
+   30  mkdir -p /data/mephi-web
+   31  echo 'LABEL=MEPHI_DATA /data/mephi-web ext4 defaults 0 2' >> /etc/fstab
+   32  mount -a
+   33  df -h
+   34  lsblk
+   35  systemctl enable --now nginx
+   36  systemctl status nginx
+   37  q
+   38  journalctl -u nginx --since "5 minutes ago" > /tmp/nginx_recent_logs.txt
+   39  curl http://localhost
+   40  groupadd mephi-devs
+   41  useradd -m -G mephi-devs mephi-admin
+   42  echo 'mephi-admin:P@ssw0rd2026' | chpasswd
+   43  chown mephi-admin:mephi-devs /data/mephi-web
+   44  chmod 2775 /data/mephi-web
+   45  ls -id /data/mephi-web
+   46  id mephi-admin
+   47  getenforce
+   48  dnf install -y policycoreutils-python-utils
+   49  semanage fcontext -a -t httpd_sys_content_t "/data/mephi-web(/.*)?"
+   50  restorecon -Rv /data/mephi-web
+   51  ls -Zd /data/mephi-web
+   52  chmod u-s /usr/sbin/tcpdump
+   53  setcap cap_net_raw,cap_net_admin+ep /usr/sbin/tcpdump
+   54  getcap /usr/sbin/tcpdump
+   55  sudo -u mephi-admin tcpdump --help
+   56  echo root > /etc/ssh/denied_users
+   57  chmod 600 /etc/ssh/denied_users
+   58  nano /etc/pam.d/sshd
+   59  dnf install -y nano
+   60  nano /etc/pam.d/sshd
+   61  nano /etc/pam.d/login
+   62  systemctl restart sshd
+   63  nano /etc/nginx/nginx.conf
+   64  sudo -u mephi-admin bash -c 'echo "Hello from Student: 371024" > /data/mephi-web/index.html'
+   65  nginx -t
+   66  systemctl restart nginx
+   67  curl http://localhost
+   68  cd ~
+   69  history > project_history.txt
