@@ -58,6 +58,15 @@ Hello from Student: 371024
 
 ## Скриншот результата
 ![mephi-nginx-screenshot](mephi-nginx-screenshot.png)
+На скриншоте показаны:
+* вход под пользователем `mephi-admin`;
+* hostname системы;
+* работающий сервис nginx;
+* результат проверки `curl http://localhost`;
+* отображение страницы:
+```text id="r4imxt"
+Hello from Student: 371024
+```
 
 ## Примечание по сетевой настройке
 
